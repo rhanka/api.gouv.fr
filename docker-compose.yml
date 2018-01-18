@@ -1,9 +1,18 @@
 version: '2'
 
 services:
-  app:
-    build: .
-    ports:
-      - 4000:4000
+  jekyll_builder:
+    build:
+      context: . 
+      args:
+        proxy: ${http_proxy}
     volumes:
       - ./:/opt/site
+  api:
+    image: nginx
+    container_name: api
+    volumes:
+      - ./_site:/usr/share/nginx/html
+    ports: 
+      - "80:80"
+    restart: always
